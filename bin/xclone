@@ -1,0 +1,31 @@
+#!/bin/sh
+
+LOCAL_MIRROR_DIR=~/gitMiror2019
+WORK_DIR=`pwd ${0}`
+
+if [ ! -e $LOCAL_MIRROR_DIR ]; then
+   mkdir -p $LOCAL_MIRROR_DIR
+   cd $LOCAL_MIRROR_DIR
+   git clone ssh://git@210.134.145.112:10022/2019_NetProject/AV_Receiver.git
+else
+   cd $LOCAL_MIRROR_DIR
+fi
+
+cd AV_Receiver
+git pull
+git fetch --prune
+
+#echo ${WORK_DIR}
+cd ${WORK_DIR}
+git clone ${LOCAL_MIRROR_DIR}/AV_Receiver
+cd AV_Receiver
+git remote remove origin
+git remote add origin ssh://git@210.134.145.112:10022/2019_NetProject/AV_Receiver.git
+git remote add onk16 ssh://git@210.134.145.112:10022/2016_NetProject/AV_Receiver.git
+git fetch --prune
+git checkout -b master2
+git branch -D master
+git checkout -b master origin/master
+git branch -D master2
+ctags -R
+
